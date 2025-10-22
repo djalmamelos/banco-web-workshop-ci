@@ -1,43 +1,23 @@
-name: CI Mentoria E2E
-
-# gatilhos 
-on: 
-  workflow_dispatch : 
-
-jobs: 
-  tests: 
-  
-#[config do so] (windows/linux/mac, chrome/firefox/edge, ...)     
-    runs-on: ubuntu-latest
-
-# [variaveis] (variáveis de ambiente, chaves de acesso a plataformas, etc.)
-    env: 
+---
+name: 'CI Mentoria E2E'
+'on':
+  workflow_dispatch: null
+jobs:
+  tests:
+    runs-on: 'ubuntu-latest'
+    env:
       API_BASE_URL: 'http://localhost:4000'
-      PORT: 4000 
+      PORT: 4000
+    steps:
+      - name: 'Checkout do Repositório'
+        uses: 'actions/checkout@v4'
+      - name: 'Instalando as dependências'
+        run: 'npm install'
+      - name: 'Iniciar servidor de mocks'
+        run: 'npm run mock-server &'
+      - name: 'Iniciar servidor de api'
+        run: 'npm run server &'
+      - name: 'Executar testes'
+        run: 'npx cypress run'
 
-#[acoes e passos] 
-    steps: 
 
-    - name: Checkout do Repositório
-      uses: actions/checkout@v4
-
-    - name: Instalando as dependências 
-      run: npm install 
-      
-    - name: Iniciar servidor de mocks
-      run: npm run mock-server &
-    
-    - name: Iniciar servidor de api
-      run: npm run server &
-
-    - name: Executar testes
-      run: npx cypress run
-      
-
-#[script de pipeline] -> YAML (Github Actions, Azure Devops, CircleCI, GitlabCI, etc.) 
- # [declaracoes]
-    
-    #[deps do projeto] (node/npm, java/maven,gradle, python/pip, ...)
-   
-  #  [projetos] (aplicacoes, projeto de teste, etc.)
-    # [acoes ou passos]
